@@ -30,6 +30,7 @@ public class ProtocolCodecs {
     static {
         HANDLED_PACKETS.add(LoginPacket.class);
         HANDLED_PACKETS.add(PlayStatusPacket.class);
+        HANDLED_PACKETS.add(PlaySoundPacket.class);
         HANDLED_PACKETS.add(ServerToClientHandshakePacket.class);
         HANDLED_PACKETS.add(ClientToServerHandshakePacket.class);
         HANDLED_PACKETS.add(DisconnectPacket.class);
@@ -112,6 +113,7 @@ public class ProtocolCodecs {
         HANDLED_PACKETS.add(LevelChunkPacket.class);
         HANDLED_PACKETS.add(ClientCheatAbilityPacket.class);
         HANDLED_PACKETS.add(ToastRequestPacket.class);
+        HANDLED_PACKETS.add(PlayerAuthInputPacket.class);
     }
 
     private static final List<ProtocolCodecUpdater> UPDATERS = new ObjectArrayList<>();

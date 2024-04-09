@@ -15,6 +15,8 @@
 
 package dev.waterdog.waterdogpe.network.protocol.handler.upstream;
 
+import dev.waterdog.waterdogpe.ProxyServer;
+import dev.waterdog.waterdogpe.event.defaults.BedrockPacketReceivedFromClientEvent;
 import dev.waterdog.waterdogpe.network.PacketDirection;
 import dev.waterdog.waterdogpe.network.protocol.handler.PluginPacketHandler;
 import dev.waterdog.waterdogpe.player.ProxiedPlayer;
@@ -41,6 +43,11 @@ public abstract class AbstractUpstreamHandler implements BedrockPacketHandler {
                 signal = mergeSignals(signal, handler.handlePacket(packet, PacketDirection.FROM_USER));
             }
         }
+        BedrockPacketReceivedFromClientEvent event = new BedrockPacketReceivedFromClientEvent(player, packet);
+        ProxyServer.getInstance().getEventManager().callEvent(event);
+        if(packet instanceof MovePlayerPacket movePlayerPacket) {
+            this.player.setLatestPosition(movePlayerPacket.getPosition());
+        }
         return signal;
     }
 
@@ -55,7 +62,6 @@ public abstract class AbstractUpstreamHandler implements BedrockPacketHandler {
         this.player.getLogger().warning("Received violation from " + this.player.getName() + ": " + packet.toString());
         return this.cancel();
     }
-
     /**
      * If connection has bridge we cancel packet to prevent sending it to downstream.
      * @return true is we can't use CancelSignalException.
